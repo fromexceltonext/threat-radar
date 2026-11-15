@@ -1,7 +1,11 @@
 import { Placeholder } from "./components/dashboard/Placeholder";
+import { StatsGrid } from "./components/dashboard/StatsGrid";
+import { getDashboard } from "@/lib/stats";
 
 
-const Home = () => {
+
+const Home = async() => {
+  const d = await getDashboard();
   return (
    <main className="mx-auto w-full max-w-6xl space-y-6 p-6 md:p-10">
     <header>
@@ -9,7 +13,7 @@ const Home = () => {
         <p className="text-gray-500">Known exploited vulnerabilities at a glance</p>
     </header>
 
-    <Placeholder label="Cards" />
+    <StatsGrid total={d.total} addedThisWeek={d.addedThisWeek} pastDue={d.pastDue} ransomware={d.ransomware} />
 
     <section className="grid gap-4 lg:grid-cols-2">
       <Placeholder label="Charts" />
