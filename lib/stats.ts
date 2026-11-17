@@ -1,6 +1,5 @@
 import { cacheLife } from "next/cache";
-import { getThreats, Threat } from "./threats";
-
+import { getThreats, type Threat } from "./threats";
 
 export type DueStatus = "overdue" | "today" | "soon" | "later";
 
@@ -39,7 +38,8 @@ export const getDashboard = async () => {
   });
 
   const addedThisWeek = threats.filter((t) => daysBetween(today, t.dateAdded) >= -7).length;
-  const pastDue = withDue.filter((t) => t.status === "overdue").length;
+  // Deadline passed in the last 30 days (most KEV entries are years past due)
+  const pastDue = withDue.filter((t) => t.daysLeft < 0 && t.daysLeft >= -30).length;
   const ransomware = threats.filter((t) => t.knownRansomwareCampaignUse === "Known").length;
 
   // Vendors ranked by number of entries
@@ -55,9 +55,9 @@ export const getDashboard = async () => {
     { name: "Unknown", value: threats.length - ransomware },
   ];
 
-  // Overdue first, then the closest due dates (next 14 days)
+  // From 14 days overdue to 14 days ahead
   const dueSoon = withDue
-    .filter((t) => t.status !== "later")
+    .filter((t) => t.daysLeft >= -14 && t.daysLeft <= 14)
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 6);
 

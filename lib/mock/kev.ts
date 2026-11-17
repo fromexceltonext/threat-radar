@@ -1,17 +1,4 @@
-export interface KevEntry {
-  cveID: string;
-  vendorProject: string;
-  product: string;
-  vulnerabilityName: string;
-  dateAdded: string;
-  shortDescription: string;
-  requiredAction: string;
-  dueDate: string;
-  knownRansomwareCampaignUse: "Known" | "Unknown";
-  forensicTriage?: "Yes" | "No"; // newer field, absent on older entries
-  notes: string;
-  cwes: string[];
-}
+import type { KevEntry } from "@/lib/sources/kev";
 
 // Returns a YYYY-MM-DD string n days from today (negative = past), in local time.
 export const daysFromToday = (n: number): string => {

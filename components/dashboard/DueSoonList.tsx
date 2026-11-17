@@ -7,7 +7,7 @@ export const DueSoonList = ({ items }: { items: DueItem[] }) => {
     <Card>
       <CardHeader>
         <CardTitle>Due soon</CardTitle>
-        <CardDescription>Overdue first, then the next 14 days</CardDescription>
+        <CardDescription>Last 14 days overdue, next 14 days due</CardDescription>
       </CardHeader>
       <CardContent>
         <ul className="divide-y divide-border">
