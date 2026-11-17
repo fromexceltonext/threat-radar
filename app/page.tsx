@@ -3,6 +3,8 @@ import { StatsGrid } from "./components/dashboard/StatsGrid";
 import { getDashboard } from "@/lib/stats";
 import { TopVendorsCard } from "./components/dashboard/TopVendorsCard";
 import { RansomwareCard } from "./components/dashboard/RansomwareCard";
+import { DueSoonList } from "@/components/dashboard/DueSoonList";
+import { RecentTable } from "@/components/dashboard/RecentTable";
 
 
 
@@ -23,8 +25,8 @@ const Home = async() => {
     </section>
 
     <section className="grid gap-4 lg:grid-cols-2">
-      <Placeholder label="Tables" />
-      <Placeholder label="Tables" />
+      <DueSoonList items={d.dueSoon} />
+      <RecentTable items={d.recent} />
     </section>
    </main>
   ) 
