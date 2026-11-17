@@ -55,11 +55,14 @@ export const getDashboard = async () => {
     { name: "Unknown", value: threats.length - ransomware },
   ];
 
-  // From 14 days overdue to 14 days ahead
-  const dueSoon = withDue
-    .filter((t) => t.daysLeft >= -14 && t.daysLeft <= 14)
-    .sort((a, b) => a.daysLeft - b.daysLeft)
-    .slice(0, 6);
+    // Next 14 days first (closest on top), then the last 14 days overdue (most recent on top)
+  const upcoming = withDue
+    .filter((t) => t.daysLeft >= 0 && t.daysLeft <= 14)
+    .sort((a, b) => a.daysLeft - b.daysLeft);
+  const recentlyOverdue = withDue
+    .filter((t) => t.daysLeft < 0 && t.daysLeft >= -14)
+    .sort((a, b) => b.daysLeft - a.daysLeft);
+  const dueSoon = [...upcoming, ...recentlyOverdue].slice(0, 6);
 
   const recent = [...withDue].sort((a, b) => b.dateAdded.localeCompare(a.dateAdded)).slice(0, 5);
 

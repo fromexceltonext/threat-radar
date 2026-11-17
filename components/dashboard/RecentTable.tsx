@@ -1,3 +1,4 @@
+import { History } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6,9 +7,12 @@ import { DueBadge } from "./DueBadge";
 
 export const RecentTable = ({ items }: { items: DueItem[] }) => {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Recently added</CardTitle>
+        <CardTitle className="flex items-center gap-2">
+          <History className="size-4 text-green-400" />
+          Recently added
+        </CardTitle>
         <CardDescription>Newest entries in the catalog</CardDescription>
       </CardHeader>
       <CardContent>
@@ -34,9 +38,13 @@ export const RecentTable = ({ items }: { items: DueItem[] }) => {
                 </TableCell>
                 <TableCell>
                   {t.knownRansomwareCampaignUse === "Known" ? (
-                    <Badge variant="destructive">Known</Badge>
+                    <Badge variant="outline" className="border-pink-500/30 bg-pink-500/15 text-pink-300">
+                      Known
+                    </Badge>
                   ) : (
-                    <Badge variant="outline">Unknown</Badge>
+                    <Badge variant="outline" className="text-muted-foreground">
+                      Unknown
+                    </Badge>
                   )}
                 </TableCell>
               </TableRow>

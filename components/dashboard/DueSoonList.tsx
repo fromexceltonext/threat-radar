@@ -1,18 +1,25 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { DueItem } from "@/lib/stats";
 import { DueBadge } from "./DueBadge";
+import { CalendarClock } from "lucide-react";
 
 export const DueSoonList = ({ items }: { items: DueItem[] }) => {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Due soon</CardTitle>
-        <CardDescription>Last 14 days overdue, next 14 days due</CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <CalendarClock className="size-4 text-amber-400" />
+          Due soon
+        </CardTitle>
+        <CardDescription>Next 14 days first, then recently overdue</CardDescription>
       </CardHeader>
       <CardContent>
         <ul className="divide-y divide-border">
           {items.map((t) => (
-            <li key={t.cveID} className="flex items-center justify-between gap-4 py-3">
+            <li 
+              key={t.cveID} 
+              className="flex items-center justify-between gap-4 py-3"
+            >
               <div className="min-w-0">
                 <p className="font-mono text-sm">{t.cveID}</p>
                 <p className="truncate text-sm text-muted-foreground">

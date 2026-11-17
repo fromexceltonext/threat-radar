@@ -22,8 +22,12 @@ const Home = async() => {
     </section>
 
     <section className="grid gap-4 lg:grid-cols-2">
-      <DueSoonList items={d.dueSoon} />
-      <RecentTable items={d.recent} />
+      <div className="lg:col-span-2">
+        <DueSoonList items={d.dueSoon} />
+      </div>
+      <div className="lg:col-span-3">
+         <RecentTable items={d.recent} />
+      </div>     
     </section>
    </main>
   ) 
