@@ -1,8 +1,7 @@
-import { Placeholder } from "./components/dashboard/Placeholder";
-import { StatsGrid } from "./components/dashboard/StatsGrid";
+import { StatsGrid } from "../components/dashboard/StatsGrid";
 import { getDashboard } from "@/lib/stats";
-import { TopVendorsCard } from "./components/dashboard/TopVendorsCard";
-import { RansomwareCard } from "./components/dashboard/RansomwareCard";
+import { TopVendorsCard } from "../components/dashboard/TopVendorsCard";
+import { RansomwareCard } from "../components/dashboard/RansomwareCard";
 import { DueSoonList } from "@/components/dashboard/DueSoonList";
 import { RecentTable } from "@/components/dashboard/RecentTable";
 

@@ -1,5 +1,5 @@
 import { cacheLife } from "next/cache";
-import { getThreats, Threat } from "./theats";
+import { getThreats, Threat } from "./threats";
 
 
 export type DueStatus = "overdue" | "today" | "soon" | "later";
