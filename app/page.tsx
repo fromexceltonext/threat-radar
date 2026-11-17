@@ -4,6 +4,7 @@ import { TopVendorsCard } from "../components/dashboard/TopVendorsCard";
 import { RansomwareCard } from "../components/dashboard/RansomwareCard";
 import { DueSoonList } from "@/components/dashboard/DueSoonList";
 import { RecentTable } from "@/components/dashboard/RecentTable";
+import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 
 
 
@@ -11,10 +12,7 @@ const Home = async() => {
   const d = await getDashboard();
   return (
    <main className="mx-auto w-full max-w-6xl space-y-6 p-6 md:p-10">
-    <header>
-      <h1 className="text-3xl font-bold tracking-tight">Threat Radar</h1>
-        <p className="text-gray-500">Known exploited vulnerabilities at a glance</p>
-    </header>
+    <DashboardHeader />
 
     <StatsGrid total={d.total} addedThisWeek={d.addedThisWeek} pastDue={d.pastDue} ransomware={d.ransomware} />
 

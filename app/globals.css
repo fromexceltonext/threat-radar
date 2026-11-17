@@ -123,6 +123,10 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(900px 500px at 15% -10%, rgb(59 130 246 / 0.22), transparent 60%),
+      radial-gradient(800px 500px at 95% 0%, rgb(139 92 246 / 0.18), transparent 60%);
+    background-attachment: fixed;  
   }
   html {
     @apply font-sans;
