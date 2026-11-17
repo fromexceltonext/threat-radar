@@ -242,6 +242,13 @@ const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
             }
             margin={{ top: 0, left: 0, right: 0, bottom: 0 }}
           >
+            {/* Customized: gradient for the pink sector */}
+            <defs>
+              <linearGradient id="donut-pink" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#f472b6" />
+                <stop offset="100%" stopColor="#a855f7" />
+              </linearGradient>
+            </defs>
             {showLabel && isDonut && (
               <text
                 className="fill-gray-700 dark:fill-gray-300"
@@ -256,6 +263,8 @@ const DonutChart = React.forwardRef<HTMLDivElement, DonutChartProps>(
             <Pie
               className={cx(
                 "stroke-white dark:stroke-gray-950 [&_.recharts-pie-sector]:outline-hidden",
+                // customized: pink sector uses the gradient
+                "[&_.fill-pink-500]:fill-[url(#donut-pink)]",
                 onValueChange ? "cursor-pointer" : "cursor-default",
               )}
               data={parseData(data, categoryColors, category)}

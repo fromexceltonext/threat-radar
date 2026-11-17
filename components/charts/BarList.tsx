@@ -87,11 +87,9 @@ function BarListInner<T>(
                 // base
                 "flex items-center rounded-sm transition-all",
                 rowHeight,
-                // background color
-                "bg-blue-200 dark:bg-blue-900",
-                onValueChange
-                  ? "group-hover:bg-blue-300 dark:group-hover:bg-blue-800"
-                  : "",
+                                // background color (customized: gradient)
+                "bg-linear-to-r from-blue-700 to-blue-400",
+                onValueChange ? "group-hover:brightness-110" : "",
                 // margin and duration
                 {
                   "mb-0": index === sortedData.length - 1,
