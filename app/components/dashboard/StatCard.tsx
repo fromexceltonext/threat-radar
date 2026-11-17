@@ -1,5 +1,4 @@
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Car } from "lucide-react";
 
 type Props = {
     title: string;
