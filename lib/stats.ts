@@ -6,7 +6,7 @@ export type DueStatus = "overdue" | "today" | "soon" | "later";
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 // Local date as YYYY-MM-DD (same format as the KEV feed)
-const todayISO = (): string => {
+export const todayISO = (): string => {
   const d = new Date();
   const pad = (v: number) => String(v).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
@@ -25,17 +25,20 @@ const dueStatus = (days: number): DueStatus => {
 
 export type DueItem = Threat & { daysLeft: number; status: DueStatus };
 
+// Adds days left + status to every threat (used by the dashboard and the threats list)
+export const addDueInfo = (threats: Threat[], today = todayISO()): DueItem[] =>
+  threats.map((t) => {
+    const daysLeft = daysBetween(today, t.dueDate);
+    return { ...t, daysLeft, status: dueStatus(daysLeft) };
+  });
+
 export const getDashboard = async () => {
   "use cache";
   cacheLife("hours");
 
   const threats = await getThreats();
   const today = todayISO();
-
-  const withDue: DueItem[] = threats.map((t) => {
-    const daysLeft = daysBetween(today, t.dueDate);
-    return { ...t, daysLeft, status: dueStatus(daysLeft) };
-  });
+  const withDue = addDueInfo(threats, today);
 
   const addedThisWeek = threats.filter((t) => daysBetween(today, t.dateAdded) >= -7).length;
   // Deadline passed in the last 30 days (most KEV entries are years past due)
@@ -55,10 +58,8 @@ export const getDashboard = async () => {
     { name: "Unknown", value: threats.length - ransomware },
   ];
 
-    // Next 14 days first (closest on top), then the last 14 days overdue (most recent on top)
-  const upcoming = withDue
-    .filter((t) => t.daysLeft >= 0 && t.daysLeft <= 14)
-    .sort((a, b) => a.daysLeft - b.daysLeft);
+  // Next 14 days first (closest on top), then the last 14 days overdue (most recent on top)
+  const upcoming = withDue.filter((t) => t.daysLeft >= 0 && t.daysLeft <= 14).sort((a, b) => a.daysLeft - b.daysLeft);
   const recentlyOverdue = withDue
     .filter((t) => t.daysLeft < 0 && t.daysLeft >= -14)
     .sort((a, b) => b.daysLeft - a.daysLeft);
