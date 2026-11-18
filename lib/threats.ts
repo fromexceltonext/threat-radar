@@ -11,3 +11,12 @@ export const getThreats = async (): Promise<Threat[]> => {
   cacheLife("hours");
   return fetchKev();
 };
+
+// One threat by its CVE id (undefined if it is not in the catalog)
+
+export const getThreat = async ( cveId: string): Promise<Threat | undefined> => {
+  const threats = await getThreats();
+  return threats.find((t)  => t.cveID === cveId.toUpperCase())
+
+
+}

@@ -1,5 +1,6 @@
-"use client"
+"use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -13,9 +14,8 @@ const LINKS = [
 // "/" only matches itself; the others also match their sub-pages (/threats/CVE-...)
 const isActive = (pathname: string, href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 
-export const NavLinks = () => {
-  const pathname = usePathname();
-
+// Draws the links. With pathname "" nothing is highlighted (used while the URL is not known yet).
+const LinksView = ({ pathname }: { pathname: string }) => {
   return (
     <nav className="flex items-center gap-2 overflow-x-auto">
       {LINKS.map((link) => {
@@ -33,5 +33,19 @@ export const NavLinks = () => {
         );
       })}
     </nav>
+  );
+};
+
+// Reads the current URL (only known at request time on dynamic routes like /threats/[cveId])
+const ActiveLinks = () => {
+  const pathname = usePathname();
+  return <LinksView pathname={pathname} />;
+};
+
+export const NavLinks = () => {
+  return (
+    <Suspense fallback={<LinksView pathname="" />}>
+      <ActiveLinks />
+    </Suspense>
   );
 };
