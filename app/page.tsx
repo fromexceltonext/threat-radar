@@ -21,7 +21,7 @@ const Home = async() => {
       <RansomwareCard split={d.ransomwareSplit} known={d.ransomware} total={d.total} />
     </section>
 
-    <section className="grid gap-4 lg:grid-cols-2">
+    <section className="grid gap-4 lg:grid-cols-5">
       <div className="lg:col-span-2">
         <DueSoonList items={d.dueSoon} />
       </div>
