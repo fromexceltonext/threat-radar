@@ -75,7 +75,7 @@ function BarListInner<T>(
               focusRing,
               onValueChange
                 ? [
-                    "-m-0! cursor-pointer",
+                    "m-0! cursor-pointer",
                     // hover
                     "hover:bg-gray-50 dark:hover:bg-gray-900",
                   ]
