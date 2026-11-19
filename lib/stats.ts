@@ -1,5 +1,6 @@
 import { cacheLife } from "next/cache";
 import { getThreats, type Threat } from "./threats";
+import { cweLabel } from "./cwe";
 
 export type DueStatus = "overdue" | "today" | "soon" | "later";
 
@@ -31,6 +32,19 @@ export const addDueInfo = (threats: Threat[], today = todayISO()): DueItem[] =>
     const daysLeft = daysBetween(today, t.dueDate);
     return { ...t, daysLeft, status: dueStatus(daysLeft) };
   });
+
+// The last `count` months as "YYYY-MM", oldest first
+const lastMonths = (today: string, count: number): string[] => {
+  const [year, month] = today.split("-").map(Number);
+  return Array.from({ length: count }, (_, i) =>
+    new Date(Date.UTC(year, month - 1 - (count - 1 - i), 1)).toISOString().slice(0, 7),
+  );
+};
+
+const monthLabel = (key: string): string =>
+  new Date(`${key}-01T00:00:00Z`).toLocaleDateString("en-US", { month: "short", timeZone: "UTC" });
+
+export type MonthPoint = { month: string; label: string; value: number };
 
 export const getDashboard = async () => {
   "use cache";
@@ -67,6 +81,31 @@ export const getDashboard = async () => {
 
   const recent = [...withDue].sort((a, b) => b.dateAdded.localeCompare(a.dateAdded)).slice(0, 5);
 
+  // NEW: entries added per month, last 12 months
+  const months = lastMonths(today, 12);
+  const perMonth = new Map(months.map((m) => [m, 0]));
+  for (const t of threats) {
+    const key = t.dateAdded.slice(0, 7);
+    if (perMonth.has(key)) perMonth.set(key, (perMonth.get(key) ?? 0) + 1);
+  }
+  const addedByMonth: MonthPoint[] = months.map((m) => ({
+    month: m,
+    label: monthLabel(m),
+    value: perMonth.get(m) ?? 0,
+  }));
+
+  // NEW: most common weaknesses (CWE ids only, skips NVD-CWE-noinfo / NVD-CWE-Other)
+  const cweCounts = new Map<string, number>();
+  for (const t of threats) {
+    for (const cwe of t.cwes ?? []) {
+      if (cwe.startsWith("CWE-")) cweCounts.set(cwe, (cweCounts.get(cwe) ?? 0) + 1);
+    }
+  }
+  const topCwes = [...cweCounts.entries()]
+    .map(([id, value]) => ({ name: cweLabel(id), value }))
+    .sort((a, b) => b.value - a.value)
+    .slice(0, 6);
+
   return {
     total: threats.length,
     addedThisWeek,
@@ -76,5 +115,7 @@ export const getDashboard = async () => {
     ransomwareSplit,
     dueSoon,
     recent,
+    addedByMonth,
+    topCwes,
   };
 };

@@ -5,6 +5,8 @@ import { RansomwareCard } from "../../components/dashboard/RansomwareCard";
 import { DueSoonList } from "@/components/dashboard/DueSoonList";
 import { RecentTable } from "@/components/dashboard/RecentTable";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { MonthlyAddedCard } from "@/components/dashboard/MonthlyAddedCard";
+import { TopCwesCard } from "@/components/dashboard/TopCwesCard";
 
 
 
@@ -33,6 +35,11 @@ const Home = async() => {
           known={d.ransomware}
           total={d.total}
         />
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-2">
+       <MonthlyAddedCard data={d.addedByMonth}/>
+       <TopCwesCard cwes={d.topCwes}/>
       </section>
 
       <section className="grid gap-4 lg:grid-cols-5">

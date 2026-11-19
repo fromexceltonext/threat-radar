@@ -29,7 +29,7 @@ export const RecentTable = ({ items }: { items: DueItem[] }) => {
             {items.map((t) => (
               <TableRow key={t.cveID}>
                 <TableCell className="font-mono">{t.cveID}</TableCell>
-                <TableCell>
+                <TableCell className="whitespace-normal">
                   {t.vendorProject}
                   <span className="block text-muted-foreground">{t.product}</span>
                 </TableCell>
